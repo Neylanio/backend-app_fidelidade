@@ -3,11 +3,24 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev:server": "ts-node-dev src/server.ts",
+    "commit": "git cz"
+  },
   "dependencies": {
+    "commitizen": "^4.1.2",
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.7",
+    "cz-conventional-changelog": "3.2.0",
+    "ts-node-dev": "^1.0.0-pre.52",
     "typescript": "^3.9.7"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
