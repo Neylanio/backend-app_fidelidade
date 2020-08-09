@@ -6,11 +6,15 @@
   "scripts": {
     "build": "tsc",
     "dev:server": "ts-node-dev src/server.ts",
-    "commit": "git cz"
+    "commit": "git cz",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "commitizen": "^4.1.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.3.0",
+    "typeorm": "^0.2.25",
+    "uuidv4": "^6.2.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.7",
