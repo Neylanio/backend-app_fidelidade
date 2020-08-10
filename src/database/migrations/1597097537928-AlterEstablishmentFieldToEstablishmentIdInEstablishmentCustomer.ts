@@ -5,26 +5,26 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class AlterUserFieldToUserId1596940156668
+export default class AlterEstablishmentFieldToEstablishmentIdInEstablishmentCustomer1597097537928
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn('customers', 'user');
+    await queryRunner.dropColumn('establishment_customer', 'establishment');
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
     await queryRunner.addColumn(
-      'customers',
+      'establishment_customer',
       new TableColumn({
-        name: 'user_id',
+        name: 'establishment_id',
         type: 'varchar',
         isNullable: true,
       }),
     );
     await queryRunner.createForeignKey(
-      'customers',
+      'establishment_customer',
       new TableForeignKey({
-        name: 'CustomerUser',
-        columnNames: ['user_id'],
+        name: 'EstablishmentId',
+        columnNames: ['establishment_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: 'establishments',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),
@@ -32,12 +32,15 @@ export default class AlterUserFieldToUserId1596940156668
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('customers', 'CustomerUser');
-    await queryRunner.dropColumn('customers', 'user_id');
+    await queryRunner.dropForeignKey(
+      'establishment_customer',
+      'EstablishmentId',
+    );
+    await queryRunner.dropColumn('establishment_customer', 'establishment_id');
     await queryRunner.addColumn(
-      'customers',
+      'establishment_customer',
       new TableColumn({
-        name: 'user',
+        name: 'establishment',
         type: 'varchar',
       }),
     );
