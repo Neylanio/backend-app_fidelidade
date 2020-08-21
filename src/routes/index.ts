@@ -1,11 +1,10 @@
-import { Router, request, response } from 'express';
+import { Router } from 'express';
 import customersRouter from './customers.routes';
+import usersRouter from './users.routes';
 
 const routes = Router();
 
-routes.get('/', (request, response) => {
-  return response.json({ok: true})
-});
-routes.use('/clientes', customersRouter);
+routes.use('/customers', customersRouter);
+routes.use('/users', usersRouter);
 
 export default routes;
