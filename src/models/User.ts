@@ -18,6 +18,9 @@ class User {
   username: string;
 
   @Column()
+  password: string;
+
+  @Column()
   active: '1' | '0';
 
   @CreateDateColumn()

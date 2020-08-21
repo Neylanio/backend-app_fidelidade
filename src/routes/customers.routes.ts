@@ -1,8 +1,10 @@
-import Router from 'express';
+import Router, { json } from 'express';
 
-const routes = Router();
+import { getRepository } from 'typeorm';
 
-routes.get('/', (request, response) => {
+const customersRouter = Router();
+
+customersRouter.get('/', (request, response) => {
   return response.json({ ok: true });
 });
 

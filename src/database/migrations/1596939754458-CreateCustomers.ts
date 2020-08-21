@@ -18,7 +18,6 @@ export default class CreateCustomers1596939754458
           {
             name: 'surname',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'whatsapp',
