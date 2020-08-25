@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
+import Customer from './Customer';
 
 @Entity('users')
 class User {
@@ -22,6 +24,9 @@ class User {
 
   @Column()
   active: '1' | '0';
+
+  @OneToOne(() => Customer, customer => customer.user)
+  customer: Customer;
 
   @CreateDateColumn()
   created_at: Date;
