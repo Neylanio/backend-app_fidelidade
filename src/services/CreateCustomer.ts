@@ -7,6 +7,7 @@ import {
   validationPassword,
 } from '../utils/Customer/validations';
 
+
 interface Request {
   email: string;
   username: string;
