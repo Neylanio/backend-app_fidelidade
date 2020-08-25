@@ -1,66 +1,50 @@
-import Router, { Request, Response } from 'express';
-import { validationResult, checkSchema } from 'express-validator';
+import Router from 'express';
+import { getRepository } from 'typeorm';
 import CreateCustomerService from '../services/CreateCustomer';
+import User from '../models/User';
 
 const customersRouter = Router();
 
-customersRouter.get('/', (request, response) => {
-  return response.json({ ok: true });
+customersRouter.get('/', async (request, response) => {
+  const userRepository = getRepository(User);
+
+  const users = await userRepository
+    .createQueryBuilder('user')
+    .leftJoinAndSelect('user.customer', 'customer')
+    .select([
+      'user.id',
+      'user.email',
+      'user.username',
+      'user.active',
+      'user.created_at',
+      'user.updated_at',
+      'customer.id',
+      'customer.surname',
+      'customer.whatsapp',
+    ])
+    .getMany();
+
+  return response.json(users);
 });
 
-customersRouter.post(
-  '/',
-  checkSchema({
-    email: {
-      isEmail: {
-        negated: false,
-      },
-    },
-    password: {
-      isLength: {
-        options: {
-          min: 6,
-        },
-      },
-    },
-  }),
-  async (request: Request, response: Response) => {
-    const { email, username, password, surname, whatsapp } = request.body;
+customersRouter.post('/', async (request, response) => {
+  const { email, username, password, surname, whatsapp } = request.body;
 
-    const newUsername = username.toLowerCase();
+  try {
+    const customerService = new CreateCustomerService();
 
-    try {
-      validationResult(request).throw();
+    const customer = await customerService.execute({
+      email,
+      username,
+      password,
+      surname,
+      whatsapp,
+    });
 
-      const customerService = new CreateCustomerService();
-
-      const customer = await customerService.execute({
-        email,
-        username: newUsername,
-        password,
-        surname,
-        whatsapp,
-      });
-
-      return response.json(customer);
-    } catch (error) {
-      switch (error.param) {
-        case 'email':
-          return response.status(401).json({ message: 'Email inválido' });
-          break;
-
-        case 'password':
-          return response.status(401).json({ message: 'Senha inválida' });
-          break;
-
-        default:
-          return response
-            .status(401)
-            .json({ message: 'Erro ao tentar cadastrar' });
-          break;
-      }
-    }
-  },
-);
+    return response.json(customer);
+  } catch (error) {
+    return response.status(400).json({ message: error.message });
+  }
+});
 
 export default customersRouter;
