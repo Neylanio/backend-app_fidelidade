@@ -36,7 +36,7 @@ export default class CreateLogs1597100414566 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
+            type: 'timestamp with time zone',
             default: 'now()',
           },
         ],
