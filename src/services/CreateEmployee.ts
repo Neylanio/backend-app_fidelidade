@@ -1,23 +1,23 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import User from '../models/User';
-import Customer from '../models/Customer';
+import Employee from '../models/Employee';
 import { validationEmail, validationPassword } from '../utils/User/validations';
 
 interface Request {
   email: string;
   username: string;
   password: string;
-  surname: string;
-  whatsapp: string;
+  name: string;
+  type: 'common' | 'manager';
 }
 
 interface Response {
   id: string;
   email: string;
   username: string;
-  surname: string;
-  whatsapp: string;
+  name: string;
+  type: 'common' | 'manager';
   user_id: string;
 }
 
@@ -26,8 +26,8 @@ class CreateCustomerService {
     email,
     username,
     password,
-    surname,
-    whatsapp,
+    name,
+    type,
   }: Request): Promise<Response> {
     const userRepository = getRepository(User);
 
@@ -36,6 +36,7 @@ class CreateCustomerService {
     const checkUsernameExists = await userRepository.findOne({ username });
 
     const retornoEmail = await validationEmail.validateAsync({ email });
+
     const retornoPassword = await validationPassword.validateAsync({
       password,
     });
@@ -52,6 +53,10 @@ class CreateCustomerService {
       throw new Error('Invalid password');
     }
 
+    if (type !== 'common' && type !== 'manager') {
+      throw new Error('There is no this Employee type');
+    }
+
     const newPassword = await hash(password, 8);
 
     const user = userRepository.create({
@@ -63,23 +68,23 @@ class CreateCustomerService {
 
     const userId = await userRepository.save(user);
 
-    const customerRepository = getRepository(Customer);
+    const employeeRepository = getRepository(Employee);
 
-    const customer = customerRepository.create({
-      surname,
-      whatsapp,
+    const employee = employeeRepository.create({
+      name,
+      type,
       active: '1',
       user_id: userId.id,
     });
 
-    const customer_id = await customerRepository.save(customer);
+    const employee_id = await employeeRepository.save(employee);
 
     return {
-      id: customer_id.id,
+      id: employee_id.id,
       email,
       username,
-      surname,
-      whatsapp,
+      name,
+      type,
       user_id: userId.id,
     };
   }
