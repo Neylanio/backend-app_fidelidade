@@ -10,7 +10,7 @@ customersRouter.get('/', async (request, response) => {
 
   const users = await userRepository
     .createQueryBuilder('user')
-    .leftJoinAndSelect('user.customer', 'customer')
+    .innerJoinAndSelect('user.customer', 'customer')
     .select([
       'user.id',
       'user.email',

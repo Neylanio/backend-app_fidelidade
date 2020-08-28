@@ -7,6 +7,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import Customer from './Customer';
+import Employee from './Employee';
 
 @Entity('users')
 class User {
@@ -27,6 +28,9 @@ class User {
 
   @OneToOne(() => Customer, customer => customer.user)
   customer: Customer;
+
+  @OneToOne(() => Employee, employee => employee.user)
+  employee: Employee;
 
   @CreateDateColumn()
   created_at: Date;
