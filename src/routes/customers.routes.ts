@@ -1,11 +1,12 @@
-import Router from 'express';
+import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import CreateCustomerService from '../services/CreateCustomer';
 import User from '../models/User';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const customersRouter = Router();
 
-customersRouter.get('/', async (request, response) => {
+customersRouter.get('/', ensureAuthenticated, async (request, response) => {
   const userRepository = getRepository(User);
 
   const users = await userRepository
@@ -30,21 +31,17 @@ customersRouter.get('/', async (request, response) => {
 customersRouter.post('/', async (request, response) => {
   const { email, username, password, surname, whatsapp } = request.body;
 
-  try {
-    const customerService = new CreateCustomerService();
+  const customerService = new CreateCustomerService();
 
-    const customer = await customerService.execute({
-      email,
-      username,
-      password,
-      surname,
-      whatsapp,
-    });
+  const customer = await customerService.execute({
+    email,
+    username,
+    password,
+    surname,
+    whatsapp,
+  });
 
-    return response.json(customer);
-  } catch (error) {
-    return response.status(400).json({ message: error.message });
-  }
+  return response.json(customer);
 });
 
 export default customersRouter;

@@ -3,6 +3,7 @@ import { hash } from 'bcryptjs';
 import User from '../models/User';
 import Customer from '../models/Customer';
 import { validationEmail, validationPassword } from '../utils/User/validations';
+import AppError from '../errors/AppError';
 
 interface Request {
   email: string;
@@ -40,16 +41,16 @@ class CreateCustomerService {
       password,
     });
 
-    if (checkEmailExists) throw new Error('Email address already used');
+    if (checkEmailExists) throw new AppError('Email address already used', 401);
 
-    if (checkUsernameExists) throw new Error('Username already used');
+    if (checkUsernameExists) throw new AppError('Username already used', 401);
 
     if (retornoEmail === false) {
-      throw new Error('Invalid email');
+      throw new AppError('Invalid email');
     }
 
     if (retornoPassword === false) {
-      throw new Error('Invalid password');
+      throw new AppError('Invalid password');
     }
 
     const newPassword = await hash(password, 8);
