@@ -26,6 +26,9 @@ class User {
   @Column()
   active: '1' | '0';
 
+  @Column()
+  avatar: string;
+
   @OneToOne(() => Customer, customer => customer.user)
   customer: Customer;
 
