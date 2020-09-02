@@ -19,6 +19,7 @@ employeesRouter.get('/', async (request, response) => {
       'user.email',
       'user.username',
       'user.active',
+      'user.avatar',
       'user.created_at',
       'user.updated_at',
       'employee.id',
