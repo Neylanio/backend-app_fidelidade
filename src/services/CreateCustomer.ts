@@ -17,6 +17,7 @@ interface Response {
   id: string;
   email: string;
   username: string;
+  type: string;
   surname: string;
   whatsapp: string;
   user_id: string;
@@ -60,6 +61,7 @@ class CreateCustomerService {
       username,
       password: newPassword,
       active: '1',
+      type: 'customer',
     });
 
     const userId = await userRepository.save(user);
@@ -79,6 +81,7 @@ class CreateCustomerService {
       id: customer_id.id,
       email,
       username,
+      type: userId.type,
       surname,
       whatsapp,
       user_id: userId.id,
