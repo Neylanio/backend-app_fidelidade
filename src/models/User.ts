@@ -26,6 +26,12 @@ class User {
   @Column()
   active: '1' | '0';
 
+  @Column()
+  type: 'employee' | 'customer';
+
+  @Column()
+  avatar: string;
+
   @OneToOne(() => Customer, customer => customer.user)
   customer: Customer;
 

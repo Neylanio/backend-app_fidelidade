@@ -18,7 +18,8 @@ interface Response {
   email: string;
   username: string;
   name: string;
-  type: 'common' | 'manager';
+  type: string;
+  type_employee: 'common' | 'manager';
   user_id: string;
 }
 
@@ -65,6 +66,7 @@ class CreateCustomerService {
       username,
       password: newPassword,
       active: '1',
+      type: 'employee',
     });
 
     const userId = await userRepository.save(user);
@@ -85,7 +87,8 @@ class CreateCustomerService {
       email,
       username,
       name,
-      type,
+      type: userId.type,
+      type_employee: type,
       user_id: userId.id,
     };
   }
