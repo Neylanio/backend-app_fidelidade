@@ -30,6 +30,9 @@ class Establishment {
   reference_point: string;
 
   @Column()
+  responsible_employee: string;
+
+  @Column()
   active: '1' | '0';
 
   @CreateDateColumn()
