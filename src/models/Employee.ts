@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import User from './User';
+import Establishment from './Establishment';
 
 @Entity('employees')
 class Employee {
@@ -23,13 +25,12 @@ class Employee {
   @Column()
   user_id: string;
 
-  // @OneToOne(() => User)
-  // @JoinColumn({ name: 'user_id' })
-  // user: User;
-
   @OneToOne(() => User, user => user.customer, { eager: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(() => Establishment, establishment => establishment.employee)
+  establishments: Establishment[];
 
   @Column()
   active: '1' | '0';

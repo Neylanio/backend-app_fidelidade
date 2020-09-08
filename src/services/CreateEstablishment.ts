@@ -1,7 +1,8 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
-import User from '../models/User';
+import Establishment from '../models/Establishment';
 import Employee from '../models/Employee';
+import User from '../models/User';
 import { validationEmail, validationPassword } from '../utils/User/validations';
 import AppError from '../errors/AppError';
 
@@ -10,27 +11,35 @@ interface Request {
   username: string;
   password: string;
   name: string;
-  type: 'common' | 'manager';
+  establishment: string;
+  street: string;
+  neighborhood: string;
+  number: string;
+  uf: string;
+  reference_point: string;
 }
 
 interface Response {
-  id: string;
   email: string;
   username: string;
-  name: string;
-  type: string;
-  type_employee: 'common' | 'manager';
-  user_id: string;
+  establishment: string;
 }
 
-class CreateEmployeeService {
-  public async execute({
-    email,
-    username,
-    password,
-    name,
-    type,
-  }: Request): Promise<Response> {
+class CreateEstablishmentService {
+  public async execute(request: Request): Promise<Response> {
+    const {
+      email,
+      username,
+      password,
+      name,
+      establishment,
+      street,
+      neighborhood,
+      number,
+      uf,
+      reference_point,
+    } = request;
+
     const userRepository = getRepository(User);
 
     const checkEmailExists = await userRepository.findOne({ email });
@@ -43,7 +52,9 @@ class CreateEmployeeService {
       password,
     });
 
-    if (checkEmailExists) throw new AppError('Email address already used', 401);
+    if (checkEmailExists) {
+      throw new AppError('Email address already registered', 401);
+    }
 
     if (checkUsernameExists) throw new AppError('Username already used', 401);
 
@@ -53,10 +64,6 @@ class CreateEmployeeService {
 
     if (retornoPassword === false) {
       throw new AppError('Invalid password');
-    }
-
-    if (type !== 'common' && type !== 'manager') {
-      throw new AppError('There is no this Employee type');
     }
 
     const newPassword = await hash(password, 8);
@@ -75,23 +82,34 @@ class CreateEmployeeService {
 
     const employee = employeeRepository.create({
       name,
-      type,
+      type: 'manager',
       active: '1',
       user_id: userId.id,
     });
 
     const employee_id = await employeeRepository.save(employee);
 
+    const establishmentRepository = getRepository(Establishment);
+
+    const establishmentt = establishmentRepository.create({
+      name: establishment,
+      street,
+      neighborhood,
+      number,
+      uf,
+      reference_point,
+      active: '1',
+      responsible_employee_id: employee_id.id,
+    });
+
+    await establishmentRepository.save(establishmentt);
+
     return {
-      id: employee_id.id,
       email,
       username,
-      name,
-      type: userId.type,
-      type_employee: type,
-      user_id: userId.id,
+      establishment,
     };
   }
 }
 
-export default CreateEmployeeService;
+export default CreateEstablishmentService;
