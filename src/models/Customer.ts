@@ -23,10 +23,6 @@ class Customer {
   @Column()
   user_id: string;
 
-  // @OneToOne(() => User)
-  // @JoinColumn({ name: 'user_id' })
-  // user: User;
-
   @OneToOne(() => User, user => user.customer, { eager: true })
   @JoinColumn({ name: 'user_id' })
   user: User;

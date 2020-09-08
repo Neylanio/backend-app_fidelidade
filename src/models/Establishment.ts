@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import Employee from './Employee';
 
-@Entity('establishment')
+@Entity('establishments')
 class Establishment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -21,16 +24,22 @@ class Establishment {
   neighborhood: string;
 
   @Column()
-  number: number;
+  number: string;
 
-  @Column()
+  @Column({
+    length: 2,
+  })
   uf: string;
 
   @Column()
   reference_point: string;
 
   @Column()
-  responsible_employee: string;
+  responsible_employee_id: string;
+
+  @ManyToOne(() => Employee)
+  @JoinColumn({ name: 'responsible_employee_id', referencedColumnName: 'id' })
+  employee: Employee;
 
   @Column()
   active: '1' | '0';
