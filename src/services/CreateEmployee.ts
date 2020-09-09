@@ -1,8 +1,9 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
+import * as Yup from 'yup';
+
 import User from '../models/User';
 import Employee from '../models/Employee';
-import { validationEmail, validationPassword } from '../utils/User/validations';
 import AppError from '../errors/AppError';
 
 interface Request {
@@ -37,26 +38,22 @@ class CreateEmployeeService {
 
     const checkUsernameExists = await userRepository.findOne({ username });
 
-    const retornoEmail = await validationEmail.validateAsync({ email });
-
-    const retornoPassword = await validationPassword.validateAsync({
-      password,
+    const validation = Yup.object().shape({
+      username: Yup.string().required('Username é obrigatório'),
+      email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
+      password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
     });
 
-    if (checkEmailExists) throw new AppError('Email address already used', 401);
+    await validation.validate({email, username, password}, {
+      abortEarly: false,
+    });
 
-    if (checkUsernameExists) throw new AppError('Username already used', 401);
+    if (checkEmailExists) throw new AppError('Email já usado. Por favor faça o Logon!', 401);
 
-    if (retornoEmail === false) {
-      throw new AppError('Invalid email');
-    }
-
-    if (retornoPassword === false) {
-      throw new AppError('Invalid password');
-    }
+    if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
 
     if (type !== 'common' && type !== 'manager') {
-      throw new AppError('There is no this Employee type');
+      throw new AppError('Tipo de funcionário inválido!');
     }
 
     const newPassword = await hash(password, 8);

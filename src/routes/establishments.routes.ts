@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import CreateEstablishmentService from '../services/CreateEstablishment';
 import User from '../models/User';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const establishmentsRouter = Router();
 
-establishmentsRouter.get('/', async (request, response) => {
+establishmentsRouter.get('/', ensureAuthenticated, async (request, response) => {
   const employeeRepository = getRepository(User);
 
   const establishments = await employeeRepository

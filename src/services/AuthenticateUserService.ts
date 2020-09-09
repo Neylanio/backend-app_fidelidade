@@ -24,12 +24,12 @@ class AuthenticateUserService {
       where: [{ email: login }, { username: login }],
     });
 
-    if (!user) throw new AppError('Incorrect login/password combination', 401);
+    if (!user) throw new AppError('Credenciais Incorretas', 401);
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      throw new AppError('Incorrect login/password combination', 401);
+      throw new AppError('Credenciais Incorretas', 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;

@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import routes from './routes';
+import * as Yup from 'yup';
 
 import AppError from './errors/AppError';
 
@@ -18,6 +19,11 @@ app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof AppError) {
       return response.status(err.statusCode).json({
+        status: 'error',
+        message: err.message,
+      });
+    }else if (err instanceof Yup.ValidationError) {
+      return response.status(400).json({
         status: 'error',
         message: err.message,
       });
