@@ -1,9 +1,17 @@
 import { Router } from 'express';
+import ensureAuthenticated from '../../middlewares/ensureAuthenticated';
 
 const customerRouter = Router();
+customerRouter.use(ensureAuthenticated);
 
-customerRouter.get('/establishments', async (request, response) => {
-  return response.json({ message: true });
-});
+// Customer data
+// --> Atulizar dados do customer
+
+
+// Establishments vinculados
+
+
+
+// Listar promocoes dos establishments vinculados
 
 export default customerRouter;

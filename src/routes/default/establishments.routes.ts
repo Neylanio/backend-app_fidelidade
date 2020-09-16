@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
-import CreateEstablishmentService from '../services/CreateEstablishment';
-import User from '../models/User';
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import CreateEstablishmentService from '../../services/CreateEstablishment';
+import User from '../../models/User';
+import ensureAuthenticated from '../../middlewares/ensureAuthenticated';
 
 const establishmentsRouter = Router();
 

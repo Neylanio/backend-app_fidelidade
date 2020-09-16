@@ -1,6 +1,8 @@
 import { Router } from 'express';
+import ensureAuthenticated from '../../middlewares/ensureAuthenticated';
 
 const adminRouter = Router();
+adminRouter.use(ensureAuthenticated);
 
 adminRouter.get('/establishments', async (request, response) => {
   return response.json({ message: true });
