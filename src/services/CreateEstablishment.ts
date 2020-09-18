@@ -69,7 +69,7 @@ class CreateEstablishmentService {
       email,
       username,
       password: newPassword,
-      active: '1',
+      active: '0',
       type: 'employee',
     });
 
@@ -95,7 +95,7 @@ class CreateEstablishmentService {
       number,
       uf,
       reference_point,
-      active: '1',
+      active: '0',
       responsible_employee_id: employee_id.id,
     });
 
