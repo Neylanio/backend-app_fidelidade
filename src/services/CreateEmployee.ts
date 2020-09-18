@@ -10,7 +10,7 @@ interface Request {
   email: string;
   username: string;
   password: string;
-  name: string;
+  surname: string;
   type: 'common' | 'manager';
 }
 
@@ -18,7 +18,7 @@ interface Response {
   id: string;
   email: string;
   username: string;
-  name: string;
+  surname: string;
   type: string;
   type_employee: 'common' | 'manager';
   user_id: string;
@@ -29,7 +29,7 @@ class CreateEmployeeService {
     email,
     username,
     password,
-    name,
+    surname,
     type,
   }: Request): Promise<Response> {
     const userRepository = getRepository(User);
@@ -71,7 +71,7 @@ class CreateEmployeeService {
     const employeeRepository = getRepository(Employee);
 
     const employee = employeeRepository.create({
-      name,
+      surname,
       type,
       active: '1',
       user_id: userId.id,
@@ -83,7 +83,7 @@ class CreateEmployeeService {
       id: employee_id.id,
       email,
       username,
-      name,
+      surname,
       type: userId.type,
       type_employee: type,
       user_id: userId.id,

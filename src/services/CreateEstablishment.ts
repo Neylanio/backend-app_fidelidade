@@ -11,7 +11,7 @@ interface Request {
   email: string;
   username: string;
   password: string;
-  name: string;
+  surname: string;
   establishment: string;
   street: string;
   neighborhood: string;
@@ -32,7 +32,7 @@ class CreateEstablishmentService {
       email,
       username,
       password,
-      name,
+      surname,
       establishment,
       street,
       neighborhood,
@@ -78,7 +78,7 @@ class CreateEstablishmentService {
     const employeeRepository = getRepository(Employee);
 
     const employee = employeeRepository.create({
-      name,
+      surname,
       type: 'manager',
       active: '1',
       user_id: userId.id,
