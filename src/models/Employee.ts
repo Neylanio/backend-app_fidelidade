@@ -17,7 +17,7 @@ class Employee {
   id: string;
 
   @Column()
-  name: string;
+  surname: string;
 
   @Column()
   type: 'common' | 'manager';
