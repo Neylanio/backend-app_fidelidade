@@ -37,7 +37,7 @@ establishmentRouter.get('/employees', async (request, response) => {
       'user.created_at',
       'user.updated_at',
       'employee.id',
-      'employee.name',
+      'employee.surname',
       'employee.type',
     ])
     .getMany();
@@ -50,7 +50,7 @@ establishmentsRouter.put('/employees', async (request, response) => {
 });
 
 establishmentRouter.post('/employees', async (request, response) => {
-  const { email, username, password, name, type } = request.body;
+  const { email, username, password, surname, type } = request.body;
 
   const employeeService = new CreateEmployeeService();
 
@@ -58,7 +58,7 @@ establishmentRouter.post('/employees', async (request, response) => {
     email,
     username,
     password,
-    name,
+    surname,
     type,
   });
 
