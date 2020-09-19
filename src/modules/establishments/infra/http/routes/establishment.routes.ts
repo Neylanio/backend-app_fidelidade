@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 
 import CreateEmployeeService from '../../services/CreateEmployee';
 import User from '../../models/User';
-import ensureAuthenticated from '../../middlewares/ensureAuthenticated';
+import ensureAuthenticated from '../../modules/users/infra/http/middlewares/ensureAuthenticated';
 import establishmentsRouter from '../default/establishments.routes';
 
 const establishmentRouter = Router();

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ensureAuthenticated from '../../middlewares/ensureAuthenticated';
+import ensureAuthenticated from '../../modules/users/infra/http/middlewares/ensureAuthenticated';
 import { getRepository } from 'typeorm';
 import User from '../../models/User';
 
