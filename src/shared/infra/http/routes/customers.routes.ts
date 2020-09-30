@@ -1,22 +1,9 @@
 import { Router } from 'express';
-import CreateCustomerService from '@modules/customers/services/CreateCustomer';
+import CustomersController from '@modules/customers/infra/http/controllers/CustomersController';
 
 const customersRouter = Router();
+const customersController = new CustomersController();
 
-customersRouter.post('/', async (request, response) => {
-  const { email, username, password, surname, whatsapp } = request.body;
-
-  const customerService = new CreateCustomerService();
-
-  const customer = await customerService.execute({
-    email,
-    username,
-    password,
-    surname,
-    whatsapp,
-  });
-
-  return response.json(customer);
-});
+customersRouter.post('/', customersController.create);
 
 export default customersRouter;

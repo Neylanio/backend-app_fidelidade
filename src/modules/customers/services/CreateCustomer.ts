@@ -1,10 +1,10 @@
-import { getRepository } from 'typeorm';
+import { inject, injectable } from 'tsyringe';
+import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
-import User from '@modules/users/infra/typeorm/entities/User';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
-import AppError from '@shared/errors/AppError';
+import ICustomersRepository from '../repositories/ICustomersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 interface Request {
   email: string;
@@ -24,7 +24,17 @@ interface Response {
   user_id: string;
 }
 
+@injectable()
 class CreateCustomerService {
+
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+
+    @inject('CustomersRepository')
+    private customersRepository: ICustomersRepository,
+  ){}
+
   public async execute({
     email,
     username,
@@ -33,11 +43,9 @@ class CreateCustomerService {
     whatsapp,
   }: Request): Promise<Response | undefined> {
 
-    const userRepository = getRepository(User);
+    const checkEmailExists = await this.usersRepository.findByMail(email);
 
-    const checkEmailExists = await userRepository.findOne({ email });
-
-    const checkUsernameExists = await userRepository.findOne({ username });
+    const checkUsernameExists = await this.usersRepository.findByUsername(username);
 
     const validation = Yup.object().shape({
       username: Yup.string().required('Username é obrigatório'),
@@ -55,7 +63,7 @@ class CreateCustomerService {
 
     const newPassword = await hash(password, 8);
 
-    const user = userRepository.create({
+    const user = await this.usersRepository.create({
       email,
       username,
       password: newPassword,
@@ -63,27 +71,21 @@ class CreateCustomerService {
       type: 'customer',
     });
 
-    const userId = await userRepository.save(user);
-
-    const customerRepository = getRepository(Customer);
-
-    const customer = customerRepository.create({
+    const customer = await this.customersRepository.create({
       surname,
       whatsapp,
       active: '1',
-      user_id: userId.id,
+      user_id: user.id,
     });
 
-    const customer_id = await customerRepository.save(customer);
-
     return {
-      id: customer_id.id,
+      id: customer.id,
       email,
       username,
-      type: userId.type,
+      type: user.type,
       surname,
       whatsapp,
-      user_id: userId.id,
+      user_id: user.id,
     };
   }
 }

@@ -8,6 +8,7 @@ customerRouter.use(ensureAuthenticated);
 
 // Customer data
 // --> Listar dados do customer
+// Deve listar customers ligados a establishments
 customerRouter.get('/', async (request, response) => {
   const userRepository = getRepository(User);
 
