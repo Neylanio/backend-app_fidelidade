@@ -3,12 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Employee from './Employee';
-import Establishment from './Establishment';
+import Employee from '@modules/employees/infra/typeorm/entities/Employee';
+import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
 
 @Entity('logs')
 class Log {

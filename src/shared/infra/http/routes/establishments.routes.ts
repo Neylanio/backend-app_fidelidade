@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import CreateEstablishmentService from '../../services/CreateEstablishment';
+import CreateEstablishmentService from '@modules/establishments/services/CreateEstablishment';
 
 const establishmentsRouter = Router();
 

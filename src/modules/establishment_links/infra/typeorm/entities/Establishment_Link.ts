@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Establishment from './Establishment';
+import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
 
 @Entity('establishment_links')
 class Establishment_Link {

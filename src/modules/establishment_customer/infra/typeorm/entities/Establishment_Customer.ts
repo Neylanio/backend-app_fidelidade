@@ -7,8 +7,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Establishment from './Establishment';
-import Customer from './Customer';
+import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
+import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 
 @Entity('establishment_customer')
 class Establishment_Customer {

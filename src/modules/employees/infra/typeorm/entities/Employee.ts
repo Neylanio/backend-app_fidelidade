@@ -8,8 +8,8 @@ import {
   OneToOne,
   OneToMany,
 } from 'typeorm';
-import User from './User';
-import Establishment from './Establishment';
+import User from '@modules/users/infra/typeorm/entities/User';
+import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
 
 @Entity('employees')
 class Employee {

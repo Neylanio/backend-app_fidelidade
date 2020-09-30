@@ -2,10 +2,10 @@ import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
-import Establishment from '../models/Establishment';
-import Employee from '../models/Employee';
-import User from '../models/User';
-import AppError from '../errors/AppError';
+import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
+import Employee from '@modules/employees/infra/typeorm/entities/Employee';
+import User from '@modules/users/infra/typeorm/entities/User';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   email: string;
@@ -64,6 +64,7 @@ class CreateEstablishmentService {
     if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
 
     const newPassword = await hash(password, 8);
+
 
     const user = userRepository.create({
       email,

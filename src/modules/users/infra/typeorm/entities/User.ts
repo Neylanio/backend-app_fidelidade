@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
   OneToOne,
 } from 'typeorm';
-import Customer from './Customer';
-import Employee from './Employee';
+import Customer from '@modules/customers/infra/typeorm/entities/Customer';
+import Employee from '@modules/employees/infra/typeorm/entities/Employee';
 
 @Entity('users')
 class User {

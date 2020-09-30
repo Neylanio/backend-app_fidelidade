@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import CreateCustomerService from '../../services/CreateCustomer';
+import CreateCustomerService from '@modules/customers/services/CreateCustomer';
 
 const customersRouter = Router();
 

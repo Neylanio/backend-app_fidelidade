@@ -1,17 +1,27 @@
 import { Router } from 'express';
-import adminRouter from './admin/admin.routes';
+import adminRouter from './admin.routes';
 
-import customersRouter from './default/customers.routes';
-import establishmentsRouter from './default/establishments.routes';
-import sessionsRouter from './default/sessions.routes';
+import customersRouter from './customers.routes';
+import establishmentsRouter from './establishments.routes';
+import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
 
-import customerRouter from './customer/customer.routes';
+import customerRouter from '@modules/customers/infra/http/routes/customer.routes';
 
-import establishmentRouter from './establishment/establishment.routes';
+import establishmentRouter from '@modules/establishments/infra/http/routes/establishment.routes';
 
 const routes = Router();
 
+//Default ROUTES OK
+
+routes.use('/customers', customersRouter);// Cadastrar customers
+routes.use('/establishments', establishmentsRouter);// Cadastrar establishment and manager employee
+routes.use('/sessions', sessionsRouter);// Login
+
+//-----------------------------------------------------------------------
+
+
 //Admin ROUTES
+
 routes.use('/admin', adminRouter);
 // Listar establishments
 // Ativar ou inativar establishment
@@ -21,20 +31,18 @@ routes.use('/admin', adminRouter);
 // Listar logs de erros
 
 
-
-//Default ROUTES OK
-routes.use('/customers', customersRouter);// Cadastrar customers
-routes.use('/establishments', establishmentsRouter);// Cadastrar establishment and manager employee
-routes.use('/sessions', sessionsRouter);// Login
+//-----------------------------------------------------------------------
 
 
 //Customer ROUTES
+
 routes.use('/customer', customerRouter);
 // Listar seus dados
 // Atualizar dados do Customer
 // Listar Establishments vinculados
 // Listar promocoes dos Establishments vinculados
 
+//-----------------------------------------------------------------------
 
 //Establishment ROUTES
 routes.use('/establishment', establishmentRouter);

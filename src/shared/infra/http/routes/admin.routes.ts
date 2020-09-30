@@ -1,7 +1,7 @@
-import { Router, request } from 'express';
-import ensureAuthenticated from '../../modules/users/infra/http/middlewares/ensureAuthenticated';
+import { Router } from 'express';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { getRepository } from 'typeorm';
-import User from '../../models/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 const adminRouter = Router();
 adminRouter.use(ensureAuthenticated);

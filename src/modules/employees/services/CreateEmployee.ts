@@ -2,9 +2,9 @@ import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
-import User from '../models/User';
-import Employee from '../models/Employee';
-import AppError from '../errors/AppError';
+import User from '@modules/users/infra/typeorm/entities/User';
+import Employee from '@modules/employees/infra/typeorm/entities/Employee';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   email: string;

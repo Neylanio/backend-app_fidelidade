@@ -1,10 +1,9 @@
-import { Router, request, response } from 'express';
+import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
-import CreateEmployeeService from '../../services/CreateEmployee';
-import User from '../../models/User';
-import ensureAuthenticated from '../../modules/users/infra/http/middlewares/ensureAuthenticated';
-import establishmentsRouter from '../default/establishments.routes';
+import CreateEmployeeService from '@modules/employees/services/CreateEmployee';
+import User from '@modules/users/infra/typeorm/entities/User';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const establishmentRouter = Router();
 establishmentRouter.use(ensureAuthenticated);
@@ -45,7 +44,7 @@ establishmentRouter.get('/employees', async (request, response) => {
   return response.json(users);
 });
 
-establishmentsRouter.put('/employees', async (request, response) => {
+establishmentRouter.put('/employees', async (request, response) => {
 
 });
 
@@ -76,38 +75,38 @@ establishmentRouter.get('/customers', async (request, response) => {
 
 
 // Listar, Cadastrar e Atualizar promocoes (manager)
-establishmentsRouter.get('/promotions', async (request, response) => {
+establishmentRouter.get('/promotions', async (request, response) => {
 
 });
 
-establishmentsRouter.post('/promotions', async (request, response) => {
+establishmentRouter.post('/promotions', async (request, response) => {
 
 });
 
-establishmentsRouter.put('/promotions', async (request, response) => {
+establishmentRouter.put('/promotions', async (request, response) => {
 
 });
 
 
 // Adicionar stamps no customer
-establishmentsRouter.post('/stamps', async (request, response) => {
+establishmentRouter.post('/stamps', async (request, response) => {
 
 })
 
 
 
 // Atualizar dados do Employee
-establishmentsRouter.get('/config', async (request, response) => {
+establishmentRouter.get('/config', async (request, response) => {
 
 });
 
-establishmentsRouter.put('/config', async (request, response) => {
+establishmentRouter.put('/config', async (request, response) => {
 
 });
 
 
 // Listar logs de acesso
-establishmentsRouter.get('/logs', async (request, response) => {
+establishmentRouter.get('/logs', async (request, response) => {
   // somente se o usuario for manager
 });
 
