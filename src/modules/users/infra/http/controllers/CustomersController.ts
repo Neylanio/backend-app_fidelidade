@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 
-import CreateCustomerService from "@modules/customers/services/CreateCustomer";
+import CreateCustomerService from "@modules/users/services/CreateCustomerService";
 
 export default class CustomersController {
   public async create(request: Request, response: Response): Promise<Response> {

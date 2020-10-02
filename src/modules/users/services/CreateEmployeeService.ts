@@ -2,16 +2,18 @@ import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
-import User from '@modules/users/infra/typeorm/entities/User';
-import Employee from '@modules/employees/infra/typeorm/entities/Employee';
 import AppError from '@shared/errors/AppError';
+
+import User from '@modules/users/infra/typeorm/entities/User';
 
 interface Request {
   email: string;
   username: string;
   password: string;
   surname: string;
-  type: 'common' | 'manager';
+  type_employee: 'common' | 'manager';
+  whatsapp: string;
+  avatar: string;
 }
 
 interface Response {
@@ -19,9 +21,10 @@ interface Response {
   email: string;
   username: string;
   surname: string;
-  type: string;
+  whatsapp: string;
+  type: 'customer' | 'employee';
   type_employee: 'common' | 'manager';
-  user_id: string;
+  active: '1' | '0';
 }
 
 class CreateEmployeeService {
@@ -30,7 +33,9 @@ class CreateEmployeeService {
     username,
     password,
     surname,
-    type,
+    type_employee,
+    avatar,
+    whatsapp,
   }: Request): Promise<Response> {
     const userRepository = getRepository(User);
 
@@ -52,7 +57,7 @@ class CreateEmployeeService {
 
     if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
 
-    if (type !== 'common' && type !== 'manager') {
+    if (type_employee !== 'common' && type_employee !== 'manager') {
       throw new AppError('Tipo de funcionário inválido!');
     }
 
@@ -62,31 +67,23 @@ class CreateEmployeeService {
       email,
       username,
       password: newPassword,
-      active: '1',
-      type: 'employee',
-    });
-
-    const userId = await userRepository.save(user);
-
-    const employeeRepository = getRepository(Employee);
-
-    const employee = employeeRepository.create({
       surname,
-      type,
+      type: 'employee',
+      type_employee,
+      avatar,
+      whatsapp,
       active: '1',
-      user_id: userId.id,
     });
-
-    const employee_id = await employeeRepository.save(employee);
 
     return {
-      id: employee_id.id,
+      id: user.id,
       email,
       username,
       surname,
-      type: userId.type,
-      type_employee: type,
-      user_id: userId.id,
+      type: user.type,
+      type_employee,
+      whatsapp,
+      active: user.active,
     };
   }
 }

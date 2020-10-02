@@ -1,13 +1,15 @@
+import Card from '@modules/cards/infra/typeorm/entities/Card';
+import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
+import Establishment_User from '@modules/establishment_user/infra/typeorm/entities/Establishment_User';
+import Log from '@modules/logs/infra/typeorm/entities/Log';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
+  OneToMany,
 } from 'typeorm';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
-import Employee from '@modules/employees/infra/typeorm/entities/Employee';
 
 @Entity('users')
 class User {
@@ -24,19 +26,34 @@ class User {
   password: string;
 
   @Column()
-  active: '1' | '0';
+  type: 'customer' | 'employee';
 
   @Column()
-  type: 'employee' | 'customer';
+  type_employee: string;
+
+  @Column()
+  surname: string;
+
+  @Column()
+  whatsapp: string;
+
+  @Column()
+  active: '1' | '0';
 
   @Column()
   avatar: string;
 
-  @OneToOne(() => Customer, customer => customer.user)
-  customer: Customer;
+  @OneToMany(type => Card, card => card.user)
+  cards: Card[];
 
-  @OneToOne(() => Employee, employee => employee.user)
-  employee: Employee;
+  @OneToMany(type => Establishment_User, establishment_User => establishment_User.user)
+  establishments_Users: Establishment_User[];
+
+  @OneToMany(type => Establishment, establishment => establishment.user)
+  establishments: Establishment[];
+
+  @OneToMany(type => Log, log => log.user)
+  logs: Log[];
 
   @CreateDateColumn()
   created_at: Date;

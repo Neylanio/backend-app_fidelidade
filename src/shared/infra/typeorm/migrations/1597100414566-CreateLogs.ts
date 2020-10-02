@@ -19,7 +19,7 @@ export default class CreateLogs1597100414566 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'employee',
+            name: 'user',
             type: 'varchar',
           },
           {

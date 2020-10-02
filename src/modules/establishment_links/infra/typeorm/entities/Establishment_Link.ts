@@ -23,7 +23,7 @@ class Establishment_Link {
   @Column()
   establishment_id: string;
 
-  @ManyToOne(() => Establishment)
+  @ManyToOne(type => Establishment, establishment => establishment.establishments_Links)
   @JoinColumn({ name: 'establishment_id' })
   establishment: Establishment;
 

@@ -5,7 +5,7 @@ import customersRouter from './customers.routes';
 import establishmentsRouter from './establishments.routes';
 import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
 
-import customerRouter from '@modules/customers/infra/http/routes/customer.routes';
+import customerRouter from '@modules/users/infra/http/routes/customer.routes';
 
 import establishmentRouter from '@modules/establishments/infra/http/routes/establishment.routes';
 

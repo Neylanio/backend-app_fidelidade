@@ -3,13 +3,13 @@ import AppError from '@shared/errors/AppError';
 import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
-import ICustomersRepository from '../repositories/ICustomersRepository';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface Request {
   email: string;
   username: string;
   password: string;
+  avatar: string;
   surname: string;
   whatsapp: string;
 }
@@ -18,10 +18,11 @@ interface Response {
   id: string;
   email: string;
   username: string;
+  avatar: string;
   type: string;
   surname: string;
   whatsapp: string;
-  user_id: string;
+  active: '1' | '0';
 }
 
 @injectable()
@@ -30,15 +31,13 @@ class CreateCustomerService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-
-    @inject('CustomersRepository')
-    private customersRepository: ICustomersRepository,
   ){}
 
   public async execute({
     email,
     username,
     password,
+    avatar,
     surname,
     whatsapp,
   }: Request): Promise<Response | undefined> {
@@ -67,25 +66,23 @@ class CreateCustomerService {
       email,
       username,
       password: newPassword,
-      active: '1',
       type: 'customer',
-    });
-
-    const customer = await this.customersRepository.create({
+      avatar,
       surname,
       whatsapp,
+      type_employee: '',
       active: '1',
-      user_id: user.id,
     });
 
     return {
-      id: customer.id,
+      id: user.id,
       email,
       username,
+      avatar,
       type: user.type,
       surname,
       whatsapp,
-      user_id: user.id,
+      active: user.active,
     };
   }
 }

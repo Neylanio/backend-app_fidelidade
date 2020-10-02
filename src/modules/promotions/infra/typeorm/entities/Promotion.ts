@@ -26,7 +26,7 @@ class Promotion {
   @Column()
   establishment_id: string;
 
-  @ManyToOne(() => Establishment)
+  @ManyToOne(type => Establishment, establishment => establishment.promotions)
   @JoinColumn({ name: 'establishment_id' })
   establishment: Establishment;
 

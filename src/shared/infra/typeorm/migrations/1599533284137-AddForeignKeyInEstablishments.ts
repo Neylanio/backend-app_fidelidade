@@ -8,12 +8,12 @@ import {
 export default class AddForeignKeyInEstablishments1599533284137
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn('establishments', 'responsible_employee');
+    await queryRunner.dropColumn('establishments', 'responsible_user');
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
     await queryRunner.addColumn(
       'establishments',
       new TableColumn({
-        name: 'responsible_employee_id',
+        name: 'responsible_user_id',
         type: 'varchar',
         isNullable: true,
       }),
@@ -21,10 +21,10 @@ export default class AddForeignKeyInEstablishments1599533284137
     await queryRunner.createForeignKey(
       'establishments',
       new TableForeignKey({
-        name: 'EmployeeEstablishment_id',
-        columnNames: ['responsible_employee_id'],
+        name: 'UserEstablishment_id',
+        columnNames: ['responsible_user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'employees',
+        referencedTableName: 'users',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),
@@ -34,13 +34,13 @@ export default class AddForeignKeyInEstablishments1599533284137
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
       'establishments',
-      'EmployeeEstablishment_id',
+      'UserEstablishment_id',
     );
-    await queryRunner.dropColumn('establishments', 'responsible_employee_id');
+    await queryRunner.dropColumn('establishments', 'responsible_user_id');
     await queryRunner.addColumn(
-      'emplestablishmentsoyees',
+      'establishments',
       new TableColumn({
-        name: 'responsible_employee',
+        name: 'responsible_user',
         type: 'varchar',
       }),
     );

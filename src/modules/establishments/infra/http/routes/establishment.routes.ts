@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
-import CreateEmployeeService from '@modules/employees/services/CreateEmployee';
+import CreateEmployeeService from '@modules/users/services/CreateEmployeeService';
 import User from '@modules/users/infra/typeorm/entities/User';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
@@ -49,7 +49,7 @@ establishmentRouter.put('/employees', async (request, response) => {
 });
 
 establishmentRouter.post('/employees', async (request, response) => {
-  const { email, username, password, surname, type } = request.body;
+  const { email, username, password, surname, type_employee, avatar, whatsapp } = request.body;
 
   const employeeService = new CreateEmployeeService();
 
@@ -58,7 +58,9 @@ establishmentRouter.post('/employees', async (request, response) => {
     username,
     password,
     surname,
-    type,
+    type_employee,
+    avatar,
+    whatsapp,
   });
 
   return response.json(employee);

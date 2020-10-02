@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
+import User from '@modules/users/infra/typeorm/entities/User';
 import Promotion from '@modules/promotions/infra/typeorm/entities/Promotion';
 
 @Entity('cards')
@@ -19,11 +19,11 @@ class Card {
   stamp_quantity: number;
 
   @Column()
-  customer_id: string;
+  user_id: string;
 
-  @ManyToOne(() => Customer)
-  @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
+  @ManyToOne(type => User, user => user.cards)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Column()
   promotion_id: string;

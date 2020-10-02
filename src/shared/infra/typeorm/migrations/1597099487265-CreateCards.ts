@@ -15,7 +15,7 @@ export default class CreateCards1597099487265 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'customer',
+            name: 'user',
             type: 'varchar',
           },
           {

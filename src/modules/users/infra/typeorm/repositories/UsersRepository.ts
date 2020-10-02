@@ -18,22 +18,26 @@ export default class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  public async findByMail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({email});
-    return user;
-  }
-
   public async findByUsername(username: string): Promise<User | undefined> {
     const user = await this.ormRepository.findOne({username});
     return user;
   }
 
-  public async create({ email, username, password, type, active }: ICreateUserDTO): Promise<User> {
+  public async findByMail(email: string): Promise<User | undefined> {
+    const user = await this.ormRepository.findOne({email});
+    return user;
+  }
+
+
+  public async create({ email, username, password, type, type_employee, surname, whatsapp, active }: ICreateUserDTO): Promise<User> {
     const user = this.ormRepository.create({
       email,
       username,
       password,
       type,
+      type_employee,
+      surname,
+      whatsapp,
       active,
     });
 

@@ -6,7 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Employee from '@modules/employees/infra/typeorm/entities/Employee';
+import User from '@modules/users/infra/typeorm/entities/User';
 import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
 
 @Entity('logs')
@@ -24,16 +24,16 @@ class Log {
   what: string;
 
   @Column()
-  employee_id: string;
+  user_id: string;
 
-  @ManyToOne(() => Employee)
-  @JoinColumn({ name: 'employee_id' })
-  employee: Employee;
+  @ManyToOne(type => User, user => user.logs)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Column()
   establishment_id: string;
 
-  @ManyToOne(() => Establishment)
+  @ManyToOne(type => Establishment, establishment => establishment.logs)
   @JoinColumn({ name: 'establishment_id' })
   establishment: Establishment;
 

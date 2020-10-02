@@ -4,36 +4,30 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
   JoinColumn,
-  OneToOne,
-  OneToMany,
 } from 'typeorm';
-import User from '@modules/users/infra/typeorm/entities/User';
 import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
+import User from '@modules/users/infra/typeorm/entities/User';
 
-@Entity('employees')
-class Employee {
+@Entity('establishment_user')
+class Establishment_User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  surname: string;
+  establishment_id: string;
 
-  @Column()
-  type: 'common' | 'manager';
+  @ManyToOne(type => Establishment, establishment => establishment.establishments_Users)
+  @JoinColumn({ name: 'establishment_id' })
+  establishment: Establishment;
 
   @Column()
   user_id: string;
 
-  @OneToOne(() => User, user => user.customer, { eager: true })
+  @ManyToOne(type => User, user => user.establishments_Users)
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToMany(() => Establishment, establishment => establishment.employee)
-  establishments: Establishment[];
-
-  @Column()
-  active: '1' | '0';
 
   @CreateDateColumn()
   created_at: Date;
@@ -42,4 +36,4 @@ class Employee {
   updated_at: Date;
 }
 
-export default Employee;
+export default Establishment_User;

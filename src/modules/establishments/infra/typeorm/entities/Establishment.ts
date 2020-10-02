@@ -6,8 +6,13 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import Employee from '@modules/employees/infra/typeorm/entities/Employee';
+import User from '@modules/users/infra/typeorm/entities/User';
+import Establishment_User from '@modules/establishment_user/infra/typeorm/entities/Establishment_User';
+import Establishment_Link from '@modules/establishment_links/infra/typeorm/entities/Establishment_Link';
+import Log from '@modules/logs/infra/typeorm/entities/Log';
+import Promotion from '@modules/promotions/infra/typeorm/entities/Promotion';
 
 @Entity('establishments')
 class Establishment {
@@ -35,11 +40,23 @@ class Establishment {
   reference_point: string;
 
   @Column()
-  responsible_employee_id: string;
+  responsible_user_id: string;
 
-  @ManyToOne(() => Employee)
-  @JoinColumn({ name: 'responsible_employee_id', referencedColumnName: 'id' })
-  employee: Employee;
+  @OneToMany(type => Establishment_Link, establishment_Link => establishment_Link.establishment)
+  establishments_Links: Establishment_Link[];
+
+  @OneToMany(type => Establishment_User, establishment_User => establishment_User.establishment)
+  establishments_Users: Establishment_User[];
+
+  @OneToMany(type => Promotion, promotion => promotion.establishment)
+  promotions: Promotion[];
+
+  @OneToMany(type => Log, log => log.establishment)
+  logs: Log[];
+
+  @ManyToOne(type => User, user => user.establishments)
+  @JoinColumn({ name: 'responsible_user_id' })
+  user: User;
 
   @Column()
   active: '1' | '0';
