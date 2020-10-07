@@ -8,9 +8,7 @@ const customersController = new CustomersController();
 // Customer data
 // --> Listar dados do customer
 // Deve listar customers ligados a establishments
-customerRouter.get('/', ensureAuthenticated, async (request, response) => {
-
-});
+customerRouter.get('/', ensureAuthenticated, async (request, response) => {});
 
 customerRouter.post('/', customersController.create);
 
@@ -19,17 +17,23 @@ customerRouter.put('/', ensureAuthenticated, async (request, response) => {
   return response.send();
 });
 
-
 // --> Establishments vinculados
-customerRouter.get('/establishments', ensureAuthenticated, async (request, response) => {
-  return response.send();
-});
-
+customerRouter.get(
+  '/establishments',
+  ensureAuthenticated,
+  async (request, response) => {
+    return response.send();
+  },
+);
 
 // Listar promocoes dos establishments vinculados
-customerRouter.get('/promotions', ensureAuthenticated, async (request, response) => {
-  // Listar cards
-  return response.send();
-});
+customerRouter.get(
+  '/promotions',
+  ensureAuthenticated,
+  async (request, response) => {
+    // Listar cards
+    return response.send();
+  },
+);
 
 export default customerRouter;

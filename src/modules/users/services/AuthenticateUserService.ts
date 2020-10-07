@@ -20,11 +20,10 @@ interface IResponse {
 
 @injectable()
 class AuthenticateUserService {
-
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-  ){}
+  ) {}
 
   public async execute({ login, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByLogin(login);

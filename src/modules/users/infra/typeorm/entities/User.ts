@@ -48,7 +48,10 @@ class User {
   @OneToMany(type => Card, card => card.user)
   cards: Card[];
 
-  @OneToMany(type => Establishment_User, establishment_User => establishment_User.user)
+  @OneToMany(
+    type => Establishment_User,
+    establishment_User => establishment_User.user,
+  )
   establishments_Users: Establishment_User[];
 
   @OneToMany(type => Establishment, establishment => establishment.user)

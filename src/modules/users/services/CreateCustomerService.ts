@@ -17,14 +17,13 @@ interface Request {
 
 @injectable()
 class CreateCustomerService {
-
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
-  ){}
+  ) {}
 
   public async execute({
     email,
@@ -34,24 +33,32 @@ class CreateCustomerService {
     surname,
     whatsapp,
   }: Request): Promise<User> {
-
     const checkEmailExists = await this.usersRepository.findByMail(email);
 
-    const checkUsernameExists = await this.usersRepository.findByUsername(username);
+    const checkUsernameExists = await this.usersRepository.findByUsername(
+      username,
+    );
 
     const validation = Yup.object().shape({
       username: Yup.string().required('Username é obrigatório'),
-      email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
+      email: Yup.string()
+        .required('E-mail obrigatório')
+        .email('Digite um e-mail válido'),
       password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
     });
 
-    await validation.validate({email, username, password}, {
-      abortEarly: false,
-    });
+    await validation.validate(
+      { email, username, password },
+      {
+        abortEarly: false,
+      },
+    );
 
-    if (checkEmailExists) throw new AppError('Email já usado. Por favor faça o Logon!', 401);
+    if (checkEmailExists)
+      throw new AppError('Email já usado. Por favor faça o Logon!', 401);
 
-    if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
+    if (checkUsernameExists)
+      throw new AppError('Username não está disponível. Tente outro!', 401);
 
     const newPassword = await this.hashProvider.generateHash(password);
 

@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
-import routes from './routes';
 import * as Yup from 'yup';
 
 import AppError from '@shared/errors/AppError';
+import routes from './routes';
 
 import '@shared/infra/typeorm';
 import '@shared/container';
@@ -23,7 +23,8 @@ app.use(
         status: 'error',
         message: err.message,
       });
-    }else if (err instanceof Yup.ValidationError) {
+    }
+    if (err instanceof Yup.ValidationError) {
       return response.status(400).json({
         status: 'error',
         message: err.message,
@@ -32,8 +33,7 @@ app.use(
 
     return response.status(500).json({
       status: 'error',
-      message: err.message,
-      // 'Internal server error'
+      message: 'Internal server error',
     });
   },
 );

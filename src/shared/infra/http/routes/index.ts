@@ -1,20 +1,19 @@
 import { Router } from 'express';
-import adminRouter from './admin.routes';
 
 import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
 
 import customerRouter from '@modules/users/infra/http/routes/customer.routes';
 
 import establishmentRouter from '@modules/establishments/infra/http/routes/establishment.routes';
+import adminRouter from './admin.routes';
 
 const routes = Router();
 
-
-routes.use('/sessions', sessionsRouter);// Login
+routes.use('/sessions', sessionsRouter); // Login
 
 //-----------------------------------------------------------------------
 
-//Admin ROUTES
+// Admin ROUTES
 
 routes.use('/admin', adminRouter);
 // Listar establishments
@@ -24,11 +23,9 @@ routes.use('/admin', adminRouter);
 // Listar customers
 // Listar logs de erros
 
-
 //-----------------------------------------------------------------------
 
-
-//Customer ROUTES
+// Customer ROUTES
 
 routes.use('/customer', customerRouter);
 // Listar seus dados
@@ -39,7 +36,7 @@ routes.use('/customer', customerRouter);
 
 //-----------------------------------------------------------------------
 
-//Establishment ROUTES
+// Establishment ROUTES
 routes.use('/establishment', establishmentRouter);
 // Listar seu dados
 // Cadastrar new establishment and new employee (no need logged user)

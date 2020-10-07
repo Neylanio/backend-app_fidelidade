@@ -1,14 +1,15 @@
-import User from "@modules/users/infra/typeorm/entities/User";
-import { uuid } from "uuidv4";
-import ICreateUserDTO from "@modules/users/dtos/ICreateUserDTO";
-import IUsersRepository from "../IUsersRepository";
+import User from '@modules/users/infra/typeorm/entities/User';
+import { uuid } from 'uuidv4';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IUsersRepository from '../IUsersRepository';
 
 export default class FakeUsersRepository implements IUsersRepository {
   private users: User[] = [];
 
-
   public async findByLogin(login: string): Promise<User | undefined> {
-    return this.users.find(user => user.email === login || user.username === login);
+    return this.users.find(
+      user => user.email === login || user.username === login,
+    );
   }
 
   public async findByUsername(username: string): Promise<User | undefined> {
@@ -27,5 +28,4 @@ export default class FakeUsersRepository implements IUsersRepository {
 
     return user;
   }
-
 }
