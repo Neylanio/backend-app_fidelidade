@@ -1,10 +1,11 @@
-import { getRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
+import { inject, injectable } from 'tsyringe';
 import * as Yup from 'yup';
 
 import AppError from '@shared/errors/AppError';
 
 import User from '@modules/users/infra/typeorm/entities/User';
+import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface Request {
   email: string;
@@ -16,18 +17,16 @@ interface Request {
   avatar: string;
 }
 
-interface Response {
-  id: string;
-  email: string;
-  username: string;
-  surname: string;
-  whatsapp: string;
-  type: 'customer' | 'employee';
-  type_employee: 'common' | 'manager';
-  active: '1' | '0';
-}
-
+@injectable()
 class CreateEmployeeService {
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
+  ){}
+
   public async execute({
     email,
     username,
@@ -36,12 +35,10 @@ class CreateEmployeeService {
     type_employee,
     avatar,
     whatsapp,
-  }: Request): Promise<Response> {
-    const userRepository = getRepository(User);
+  }: Request): Promise<User> {
+    const checkEmailExists = await this.usersRepository.findByMail(email);
 
-    const checkEmailExists = await userRepository.findOne({ email });
-
-    const checkUsernameExists = await userRepository.findOne({ username });
+    const checkUsernameExists = await this.usersRepository.findByUsername(username);
 
     const validation = Yup.object().shape({
       username: Yup.string().required('Username é obrigatório'),
@@ -53,7 +50,7 @@ class CreateEmployeeService {
       abortEarly: false,
     });
 
-    if (checkEmailExists) throw new AppError('Email já usado. Por favor faça o Logon!', 401);
+    if (checkEmailExists) throw new AppError('Email já registrado. Por favor faça o Login!', 401);
 
     if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
 
@@ -61,9 +58,9 @@ class CreateEmployeeService {
       throw new AppError('Tipo de funcionário inválido!');
     }
 
-    const newPassword = await hash(password, 8);
+    const newPassword = await this.hashProvider.generateHash(password);
 
-    const user = userRepository.create({
+    const user = await this.usersRepository.create({
       email,
       username,
       password: newPassword,
@@ -75,16 +72,7 @@ class CreateEmployeeService {
       active: '1',
     });
 
-    return {
-      id: user.id,
-      email,
-      username,
-      surname,
-      type: user.type,
-      type_employee,
-      whatsapp,
-      active: user.active,
-    };
+    return user;
   }
 }
 

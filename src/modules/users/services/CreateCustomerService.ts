@@ -1,9 +1,10 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import { hash } from 'bcryptjs';
 import * as Yup from 'yup';
 
 import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import User from '../infra/typeorm/entities/User';
 
 interface Request {
   email: string;
@@ -14,23 +15,15 @@ interface Request {
   whatsapp: string;
 }
 
-interface Response {
-  id: string;
-  email: string;
-  username: string;
-  avatar: string;
-  type: string;
-  surname: string;
-  whatsapp: string;
-  active: '1' | '0';
-}
-
 @injectable()
 class CreateCustomerService {
 
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ){}
 
   public async execute({
@@ -40,7 +33,7 @@ class CreateCustomerService {
     avatar,
     surname,
     whatsapp,
-  }: Request): Promise<Response | undefined> {
+  }: Request): Promise<User> {
 
     const checkEmailExists = await this.usersRepository.findByMail(email);
 
@@ -60,7 +53,7 @@ class CreateCustomerService {
 
     if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
 
-    const newPassword = await hash(password, 8);
+    const newPassword = await this.hashProvider.generateHash(password);
 
     const user = await this.usersRepository.create({
       email,
@@ -74,16 +67,7 @@ class CreateCustomerService {
       active: '1',
     });
 
-    return {
-      id: user.id,
-      email,
-      username,
-      avatar,
-      type: user.type,
-      surname,
-      whatsapp,
-      active: user.active,
-    };
+    return user;
   }
 }
 

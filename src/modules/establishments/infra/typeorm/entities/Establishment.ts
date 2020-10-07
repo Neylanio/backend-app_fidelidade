@@ -31,10 +31,16 @@ class Establishment {
   @Column()
   number: string;
 
+  @Column()
+  city: string;
+
   @Column({
     length: 2,
   })
   uf: string;
+
+  @Column()
+  tel: string;
 
   @Column()
   reference_point: string;

@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 class User {
@@ -23,6 +24,7 @@ class User {
   username: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
@@ -59,6 +61,7 @@ class User {
   created_at: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at: Date;
 }
 

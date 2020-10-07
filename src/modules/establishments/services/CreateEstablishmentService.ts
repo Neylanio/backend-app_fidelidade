@@ -1,112 +1,76 @@
-// import { getRepository } from 'typeorm';
-// import { hash } from 'bcryptjs';
-// import * as Yup from 'yup';
+import { inject, injectable } from "tsyringe";
 
-// import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
-// import User from '@modules/users/infra/typeorm/entities/User';
-// import AppError from '@shared/errors/AppError';
+import IRequestCreateEstablishmentDTO from "../dtos/IRequestCreateEstablishmentDTO";
+import IResponseCreateEstablishmentDTO from "../dtos/IResponseCreateEstablishmentDTO";
 
-// interface Request {
-//   email: string;
-//   username: string;
-//   password: string;
-//   surname: string;
-//   establishment: string;
-//   street: string;
-//   neighborhood: string;
-//   number: string;
-//   uf: string;
-//   reference_point: string;
-// }
+import IEstablishmentsRepository from "../repositories/IEstablishmentsRepository";
 
-// interface Response {
-//   email: string;
-//   username: string;
-//   establishment: string;
-// }
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import BCryptHashProvider from "@modules/users/providers/HashProvider/implementations/BCryptHashProvider";
+import CreateEmployeeService from "@modules/users/services/CreateEmployeeService";
+import AppError from "@shared/errors/AppError";
 
-// class CreateEstablishmentService {
-//   public async execute(request: Request): Promise<Response> {
-//     const {
-//       email,
-//       username,
-//       password,
-//       surname,
-//       establishment,
-//       street,
-//       neighborhood,
-//       number,
-//       uf,
-//       reference_point,
-//     } = request;
+@injectable()
+export default class CreateEstablishmentService {
+  constructor(
+    @inject('EstablishmentsRepository')
+    private establishmentsRepository: IEstablishmentsRepository,
+  ){}
 
-//     const userRepository = getRepository(User);
+  public async execute(
+    {
+      avatar,
+      email,
+      establishment,
+      neighborhood,
+      number,
+      password,
+      reference_point,
+      street,
+      surname,
+      tel,
+      city,
+      uf,
+      username,
+      whatsapp,
+    }: IRequestCreateEstablishmentDTO): Promise<IResponseCreateEstablishmentDTO> {
 
-//     const checkEmailExists = await userRepository.findOne({ email });
+      const usersRepository = new UsersRepository();
+      const bCryptHashProvider = new BCryptHashProvider();
+      const createEmployeeService = new CreateEmployeeService(usersRepository, bCryptHashProvider);
 
-//     const checkUsernameExists = await userRepository.findOne({ username });
+      const employee = await createEmployeeService.execute({
+        avatar,
+        email,
+        password,
+        surname,
+        type_employee: 'manager',
+        username,
+        whatsapp,
+      });
 
-//     const validation = Yup.object().shape({
-//       username: Yup.string().required('Username é obrigatório'),
-//       email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
-//       password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
-//     });
+      const checkEstablishmentName = await this.establishmentsRepository.findByName(establishment);
 
-//     await validation.validate({email, username, password}, {
-//       abortEarly: false,
-//     });
+      if(checkEstablishmentName){
+        throw new AppError('Establishment name already used');
+      }
 
-//     if (checkEmailExists) {
-//       throw new AppError('Email já usado. Por favor faça o Logon!', 401);
-//     }
+      await this.establishmentsRepository.create({
+        name: establishment,
+        neighborhood,
+        number,
+        reference_point,
+        street,
+        tel,
+        city,
+        uf,
+        responsible_user_id: employee.id,
+      });
 
-//     if (checkUsernameExists) throw new AppError('Username não está disponível. Tente outro!', 401);
-
-//     const newPassword = await hash(password, 8);
-
-
-//     const user = userRepository.create({
-//       email,
-//       username,
-//       password: newPassword,
-//       active: '0',
-//       type: 'employee',
-//     });
-
-//     const userId = await userRepository.save(user);
-
-//     const employeeRepository = getRepository(Employee);
-
-//     const employee = employeeRepository.create({
-//       surname,
-//       type: 'manager',
-//       active: '1',
-//       user_id: userId.id,
-//     });
-
-//     const employee_id = await employeeRepository.save(employee);
-
-//     const establishmentRepository = getRepository(Establishment);
-
-//     const establishmentt = establishmentRepository.create({
-//       name: establishment,
-//       street,
-//       neighborhood,
-//       number,
-//       uf,
-//       reference_point,
-//       active: '0',
-//       responsible_employee_id: employee_id.id,
-//     });
-
-//     await establishmentRepository.save(establishmentt);
-
-//     return {
-//       email,
-//       username,
-//       establishment,
-//     };
-//   }
-// }
-
-// export default CreateEstablishmentService;
+      return {
+        email,
+        establishment,
+        username,
+      }
+    }
+}
