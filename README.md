@@ -1,5 +1,9 @@
-# Commands
-- Start project
-> yarn
-- Run project
-> yarn dev:server
+# App FIDELITAL
+
+## Commands
+> Install dependencies
+>> yarn
+>Run project
+>> yarn dev:server
+
+
