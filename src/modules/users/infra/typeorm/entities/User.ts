@@ -45,19 +45,19 @@ class User {
   @Column()
   avatar: string;
 
-  @OneToMany(type => Card, card => card.user)
+  @OneToMany(() => Card, card => card.user)
   cards: Card[];
 
   @OneToMany(
-    type => Establishment_User,
+    () => Establishment_User,
     establishment_User => establishment_User.user,
   )
   establishments_Users: Establishment_User[];
 
-  @OneToMany(type => Establishment, establishment => establishment.user)
+  @OneToMany(() => Establishment, establishment => establishment.user)
   establishments: Establishment[];
 
-  @OneToMany(type => Log, log => log.user)
+  @OneToMany(() => Log, log => log.user)
   logs: Log[];
 
   @CreateDateColumn()

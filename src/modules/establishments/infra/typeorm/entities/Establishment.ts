@@ -48,19 +48,25 @@ class Establishment {
   @Column()
   responsible_user_id: string;
 
-  @OneToMany(type => Establishment_Link, establishment_Link => establishment_Link.establishment)
+  @OneToMany(
+    () => Establishment_Link,
+    establishment_Link => establishment_Link.establishment,
+  )
   establishments_Links: Establishment_Link[];
 
-  @OneToMany(type => Establishment_User, establishment_User => establishment_User.establishment)
+  @OneToMany(
+    () => Establishment_User,
+    establishment_User => establishment_User.establishment,
+  )
   establishments_Users: Establishment_User[];
 
-  @OneToMany(type => Promotion, promotion => promotion.establishment)
+  @OneToMany(() => Promotion, promotion => promotion.establishment)
   promotions: Promotion[];
 
-  @OneToMany(type => Log, log => log.establishment)
+  @OneToMany(() => Log, log => log.establishment)
   logs: Log[];
 
-  @ManyToOne(type => User, user => user.establishments)
+  @ManyToOne(() => User, user => user.establishments)
   @JoinColumn({ name: 'responsible_user_id' })
   user: User;
 
