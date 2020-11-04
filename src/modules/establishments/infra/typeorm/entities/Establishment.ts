@@ -9,10 +9,10 @@ import {
   OneToMany,
 } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
-import Establishment_User from '@modules/establishment_user/infra/typeorm/entities/Establishment_User';
 import Establishment_Link from '@modules/establishment_links/infra/typeorm/entities/Establishment_Link';
 import Log from '@modules/logs/infra/typeorm/entities/Log';
 import Promotion from '@modules/promotions/infra/typeorm/entities/Promotion';
+import Establishment_User from './Establishment_User';
 
 @Entity('establishments')
 class Establishment {

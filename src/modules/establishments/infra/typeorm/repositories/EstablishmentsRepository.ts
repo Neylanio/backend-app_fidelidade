@@ -1,9 +1,10 @@
-import ICreateEstablishmentDTO from "@modules/establishments/dtos/ICreateEstablishmentDTO";
-import IEstablishmentsRepository from "@modules/establishments/repositories/IEstablishmentsRepository";
-import { getRepository, Repository } from "typeorm";
-import Establishment from "../entities/Establishment";
+import ICreateEstablishmentDTO from '@modules/establishments/dtos/ICreateEstablishmentDTO';
+import IEstablishmentsRepository from '@modules/establishments/repositories/IEstablishmentsRepository';
+import { getRepository, Repository } from 'typeorm';
+import Establishment from '../entities/Establishment';
 
-export default class EstablishmentsRepository implements IEstablishmentsRepository {
+export default class EstablishmentsRepository
+  implements IEstablishmentsRepository {
   private ormRepository: Repository<Establishment>;
 
   constructor() {
@@ -11,21 +12,20 @@ export default class EstablishmentsRepository implements IEstablishmentsReposito
   }
 
   public async findByName(name: string): Promise<Establishment | undefined> {
-    return this.ormRepository.findOne({name});
+    return this.ormRepository.findOne({ name });
   }
 
-  public async create(
-    {
-      name,
-      street,
-      neighborhood,
-      number,
-      tel,
-      city,
-      uf,
-      reference_point,
-      responsible_user_id,
-    }: ICreateEstablishmentDTO): Promise<Establishment> {
+  public async create({
+    name,
+    street,
+    neighborhood,
+    number,
+    tel,
+    city,
+    uf,
+    reference_point,
+    responsible_user_id,
+  }: ICreateEstablishmentDTO): Promise<Establishment> {
     const establishment = this.ormRepository.create({
       name,
       street,

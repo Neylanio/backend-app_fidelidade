@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
-import { container } from "tsyringe";
+import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
-import CreateEstablishmentService from "@modules/establishments/services/CreateEstablishmentService";
+import CreateEstablishmentService from '@modules/establishments/services/CreateEstablishmentService';
+import CreateEmployeeService from '@modules/users/services/CreateEmployeeService';
 
 export default class EstablishmentsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -21,26 +22,38 @@ export default class EstablishmentsController {
       reference_point,
     } = request.body;
 
-    const createEstablishmentService = container.resolve(CreateEstablishmentService);
+    const createEmployeeService = container.resolve(CreateEmployeeService);
 
-    const estab = await createEstablishmentService.execute({
+    const employee = await createEmployeeService.execute({
       avatar: '',
       email,
-      username,
       password,
       surname,
+      type_employee: 'manager',
+      username,
       whatsapp,
-      city,
+    });
+
+    const createEstablishmentService = container.resolve(
+      CreateEstablishmentService,
+    );
+
+    await createEstablishmentService.execute({
       establishment,
+      city,
       neighborhood,
       number,
       street,
       tel,
       uf,
       reference_point,
+      employee_id: employee.id,
     });
 
-    return response.json(estab);
-
+    return response.json({
+      email,
+      establishment,
+      username,
+    });
   }
 }

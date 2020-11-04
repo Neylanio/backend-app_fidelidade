@@ -1,10 +1,4 @@
 export default interface IRequestCreateEstablishmentDTO {
-  email: string;
-  username: string;
-  password: string;
-  surname: string;
-  whatsapp: string;
-  avatar: string;
   establishment: string;
   street: string;
   neighborhood: string;
@@ -13,4 +7,5 @@ export default interface IRequestCreateEstablishmentDTO {
   city: string;
   uf: string;
   reference_point: string;
+  employee_id: string;
 }

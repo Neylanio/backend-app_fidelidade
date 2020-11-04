@@ -5,6 +5,7 @@ import cors from 'cors';
 import * as Yup from 'yup';
 
 import AppError from '@shared/errors/AppError';
+import { getConnection } from 'typeorm';
 import routes from './routes';
 
 import '@shared/infra/typeorm';
@@ -16,9 +17,18 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
+async function rollBack() {
+  const connection = getConnection();
+  const queryRunner = connection.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.rollbackTransaction();
+}
+
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof AppError) {
+      rollBack();
+
       return response.status(err.statusCode).json({
         status: 'error',
         message: err.message,
