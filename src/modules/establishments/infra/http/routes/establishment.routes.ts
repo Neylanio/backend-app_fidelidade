@@ -28,11 +28,11 @@ establishmentRouter.get(
   },
 );
 
-establishmentRouter.put(
-  '/employees',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// establishmentRouter.put(
+//   '/employees',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
 establishmentRouter.post(
   '/employees',
@@ -51,44 +51,44 @@ establishmentRouter.get(
   },
 );
 
-// Listar, Cadastrar e Atualizar promocoes (manager)
-establishmentRouter.get(
-  '/promotions',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// // Listar, Cadastrar e Atualizar promocoes (manager)
+// establishmentRouter.get(
+//   '/promotions',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
-establishmentRouter.post(
-  '/promotions',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// establishmentRouter.post(
+//   '/promotions',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
-establishmentRouter.put(
-  '/promotions',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// establishmentRouter.put(
+//   '/promotions',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
-// Adicionar stamps no customer
-establishmentRouter.post(
-  '/stamps',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// // Adicionar stamps no customer
+// establishmentRouter.post(
+//   '/stamps',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
-// Atualizar dados do Employee
-establishmentRouter.get(
-  '/config',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// // Atualizar dados do Employee
+// establishmentRouter.get(
+//   '/config',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
-establishmentRouter.put(
-  '/config',
-  ensureAuthenticated,
-  async (request, response) => {},
-);
+// establishmentRouter.put(
+//   '/config',
+//   ensureAuthenticated,
+//   async (request, response) => {},
+// );
 
 // Listar logs de acesso
 establishmentRouter.get(

@@ -22,4 +22,10 @@ export default class EstablishmentUserRepository
 
     return this.ormRepository.save(establishmentUser);
   }
+
+  public async findEstablishment(
+    establishment_id: string,
+  ): Promise<Establishment_User | undefined> {
+    return this.ormRepository.findOne({ establishment_id });
+  }
 }

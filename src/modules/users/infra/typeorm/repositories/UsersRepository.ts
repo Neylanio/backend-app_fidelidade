@@ -51,4 +51,8 @@ export default class UsersRepository implements IUsersRepository {
 
     return this.ormRepository.save(user);
   }
+
+  public async delete(user: User): Promise<void> {
+    await this.ormRepository.remove(user);
+  }
 }

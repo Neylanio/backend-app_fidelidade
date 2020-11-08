@@ -2,18 +2,14 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IEstablishmentsRepository from '../repositories/IEstablishmentsRepository';
-import IEstablishmentUserRepository from '../repositories/IEstablishmentUserRepository';
-import IResponseCreateEstablishmentDTO from '../dtos/IResponseCreateEstablishmentDTO';
 import IRequestCreateEstablishmentDTO from '../dtos/IRequestCreateEstablishmentDTO';
+import Establishment from '../infra/typeorm/entities/Establishment';
 
 @injectable()
 export default class CreateEstablishmentService {
   constructor(
     @inject('EstablishmentsRepository')
     private establishmentsRepository: IEstablishmentsRepository,
-
-    @inject('EstablishmentUserRepository')
-    private establishmentUserRepository: IEstablishmentUserRepository,
   ) {}
 
   public async execute({
@@ -26,13 +22,13 @@ export default class CreateEstablishmentService {
     uf,
     reference_point,
     employee_id,
-  }: IRequestCreateEstablishmentDTO): Promise<IResponseCreateEstablishmentDTO> {
+  }: IRequestCreateEstablishmentDTO): Promise<Establishment> {
     const checkEstablishmentName = await this.establishmentsRepository.findByName(
       establishment,
     );
 
     if (checkEstablishmentName) {
-      throw new AppError('Establishment name already used');
+      throw new AppError('Estabelecimento já cadastrado!!');
     }
 
     const establishmentId = await this.establishmentsRepository.create({
@@ -47,13 +43,6 @@ export default class CreateEstablishmentService {
       responsible_user_id: employee_id,
     });
 
-    await this.establishmentUserRepository.create({
-      establishment_id: establishmentId.id,
-      user_id: employee_id,
-    });
-
-    return {
-      establishment,
-    };
+    return establishmentId;
   }
 }

@@ -28,4 +28,8 @@ export default class FakeUsersRepository implements IUsersRepository {
 
     return user;
   }
+
+  public async delete(user: User): Promise<void> {
+    this.users = this.users.filter(item => item.id !== user.id);
+  }
 }
