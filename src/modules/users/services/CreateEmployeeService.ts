@@ -1,6 +1,4 @@
 import { inject, injectable } from 'tsyringe';
-import * as Yup from 'yup';
-
 import AppError from '@shared/errors/AppError';
 
 import User from '@modules/users/infra/typeorm/entities/User';
@@ -40,21 +38,6 @@ class CreateEmployeeService {
 
     const checkUsernameExists = await this.usersRepository.findByUsername(
       username,
-    );
-
-    const validation = Yup.object().shape({
-      username: Yup.string().required('Username é obrigatório'),
-      email: Yup.string()
-        .required('E-mail obrigatório')
-        .email('Digite um e-mail válido'),
-      password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
-    });
-
-    await validation.validate(
-      { email, username, password },
-      {
-        abortEarly: false,
-      },
     );
 
     if (checkEmailExists)

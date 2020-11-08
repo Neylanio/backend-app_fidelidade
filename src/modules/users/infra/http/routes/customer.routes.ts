@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import { celebrate, Joi, Segments } from 'celebrate';
 import CustomersController from '../controllers/CustomersController';
 
 const customerRouter = Router();
@@ -8,9 +9,21 @@ const customersController = new CustomersController();
 // Customer data
 // --> Listar dados do customer
 // Deve listar customers ligados a establishments
-customerRouter.get('/', ensureAuthenticated, async (request, response) => {});
+// customerRouter.get('/', ensureAuthenticated, async (request, response) => {});
 
-customerRouter.post('/', customersController.create);
+customerRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+      username: Joi.string().required(),
+      password: Joi.string().required().min(6),
+      surname: Joi.string(),
+      whatsapp: Joi.string(),
+    },
+  }),
+  customersController.create,
+);
 
 // --> Atulizar dados do customer
 customerRouter.put('/', ensureAuthenticated, async (request, response) => {

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import { celebrate, Joi, Segments } from 'celebrate';
 import EstablishmentsController from '../controllers/EstablishmentsController';
 
 const establishmentRouter = Router();
@@ -12,7 +13,27 @@ establishmentRouter.get('/', ensureAuthenticated, async (request, response) => {
   return response.json(establishment);
 });
 
-establishmentRouter.post('/', establishmentController.create);
+establishmentRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+      username: Joi.string().required(),
+      password: Joi.string().required().min(6),
+      surname: Joi.string(),
+      whatsapp: Joi.string(),
+      city: Joi.string(),
+      establishment: Joi.string().required(),
+      neighborhood: Joi.string(),
+      number: Joi.string(),
+      street: Joi.string(),
+      tel: Joi.string(),
+      uf: Joi.string().length(2),
+      reference_point: Joi.string(),
+    },
+  }),
+  establishmentController.create,
+);
 
 establishmentRouter.put('/', ensureAuthenticated, async (request, response) => {
   const establishment = '';
