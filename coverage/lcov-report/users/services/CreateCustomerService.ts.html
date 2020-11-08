@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/31</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -122,17 +122,7 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,7 +142,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,23 +156,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -207,7 +189,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { inject, injectable } from 'tsyringe';</span>
 <span class="cstat-no" title="statement not covered" >import AppError from '@shared/errors/AppError';</span>
-<span class="cstat-no" title="statement not covered" >import * as Yup from 'yup';</span>
 &nbsp;
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
@@ -224,14 +205,13 @@ interface Request {
 &nbsp;
 @injectable()
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >class <span class="cstat-no" title="statement not covered" >C</span></span>reateCustomerService {</span>
-&nbsp;
 <span class="fstat-no" title="function not covered" >  constructor(</span>
     @inject('UsersRepository')
     private <span class="cstat-no" title="statement not covered" >usersRepository: IUsersRepository,</span>
 &nbsp;
     @inject('HashProvider')
     private <span class="cstat-no" title="statement not covered" >hashProvider: IHashProvider,</span>
-  ){}
+  ) {}
 &nbsp;
 <span class="fstat-no" title="function not covered" >  public async <span class="cstat-no" title="statement not covered" >e</span>xecute({</span>
     email<span class="cstat-no" title="statement not covered" >,</span>
@@ -241,24 +221,17 @@ interface Request {
     surname<span class="cstat-no" title="statement not covered" >,</span>
     whatsapp<span class="cstat-no" title="statement not covered" >,</span>
   }: Request): Promise&lt;User&gt; {
-&nbsp;
     const <span class="cstat-no" title="statement not covered" >checkEmailExists = <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >await this.usersRepository.findByMail(email);</span></span></span>
 &nbsp;
-    const <span class="cstat-no" title="statement not covered" >checkUsernameExists = <span class="cstat-no" title="statement not covered" >await this.usersRepository.findByUsername(username);</span></span>
+    const <span class="cstat-no" title="statement not covered" >checkUsernameExists = <span class="cstat-no" title="statement not covered" >await this.usersRepository.findByUsername(</span></span>
+      username,
+    );
 &nbsp;
-    const <span class="cstat-no" title="statement not covered" >validation = Yup.object().shape({</span>
-      username: Yup.string().required('Username é obrigatório'),
-      email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
-      password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
-    });
+<span class="cstat-no" title="statement not covered" >    if (checkEmailExists)</span>
+<span class="cstat-no" title="statement not covered" >      throw new AppError('Email já usado. Por favor faça o Logon!', 401);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await validation.validate({email, username, password}, {</span>
-      abortEarly: false,
-    });
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (checkEmailExists) <span class="cstat-no" title="statement not covered" >throw new AppError('Email já usado. Por favor faça o Logon!', 401);</span></span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (checkUsernameExists) <span class="cstat-no" title="statement not covered" >throw new AppError('Username não está disponível. Tente outro!', 401);</span></span>
+<span class="cstat-no" title="statement not covered" >    if (checkUsernameExists)</span>
+<span class="cstat-no" title="statement not covered" >      throw new AppError('Username não está disponível. Tente outro!', 401);</span>
 &nbsp;
     const <span class="cstat-no" title="statement not covered" >newPassword = <span class="cstat-no" title="statement not covered" >await this.hashProvider.generateHash(password);</span></span>
 &nbsp;
@@ -286,7 +259,7 @@ interface Request {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Oct 04 2020 18:31:06 GMT-0300 (GMT-03:00)
+                at Sun Nov 08 2020 20:24:09 GMT-0300 (GMT-03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
