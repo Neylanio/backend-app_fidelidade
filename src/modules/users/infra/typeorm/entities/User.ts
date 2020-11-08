@@ -1,6 +1,6 @@
 import Card from '@modules/cards/infra/typeorm/entities/Card';
 import Establishment from '@modules/establishments/infra/typeorm/entities/Establishment';
-import Establishment_User from '@modules/establishment_user/infra/typeorm/entities/Establishment_User';
+import Establishment_User from '@modules/establishments/infra/typeorm/entities/Establishment_User';
 import Log from '@modules/logs/infra/typeorm/entities/Log';
 import {
   Entity,

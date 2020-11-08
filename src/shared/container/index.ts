@@ -8,6 +8,9 @@ import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepo
 import IEstablishmentsRepository from '@modules/establishments/repositories/IEstablishmentsRepository';
 import EstablishmentsRepository from '@modules/establishments/infra/typeorm/repositories/EstablishmentsRepository';
 
+import IEstablishmentUserRepository from '@modules/establishments/repositories/IEstablishmentUserRepository';
+import EstablishmentUserRepository from '@modules/establishments/infra/typeorm/repositories/EstablishmentUserRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -16,4 +19,9 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IEstablishmentsRepository>(
   'EstablishmentsRepository',
   EstablishmentsRepository,
+);
+
+container.registerSingleton<IEstablishmentUserRepository>(
+  'EstablishmentUserRepository',
+  EstablishmentUserRepository,
 );
