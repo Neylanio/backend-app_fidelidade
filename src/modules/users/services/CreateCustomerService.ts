@@ -1,6 +1,5 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import * as Yup from 'yup';
 
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
@@ -37,21 +36,6 @@ class CreateCustomerService {
 
     const checkUsernameExists = await this.usersRepository.findByUsername(
       username,
-    );
-
-    const validation = Yup.object().shape({
-      username: Yup.string().required('Username é obrigatório'),
-      email: Yup.string()
-        .required('E-mail obrigatório')
-        .email('Digite um e-mail válido'),
-      password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
-    });
-
-    await validation.validate(
-      { email, username, password },
-      {
-        abortEarly: false,
-      },
     );
 
     if (checkEmailExists)
