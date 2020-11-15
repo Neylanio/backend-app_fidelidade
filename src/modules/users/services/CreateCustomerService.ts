@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import User from '../infra/typeorm/entities/User';
@@ -22,6 +23,9 @@ class CreateCustomerService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -57,6 +61,8 @@ class CreateCustomerService {
       type_employee: '',
       active: '1',
     });
+
+    await this.cacheProvider.invalidatePrefix('customers:*');
 
     return user;
   }
