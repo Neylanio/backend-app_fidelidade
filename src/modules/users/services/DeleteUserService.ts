@@ -1,23 +1,31 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import User from '../infra/typeorm/entities/User';
+import ICacheProvider from '@shared/container/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
+
+interface Request {
+  email: string;
+}
 
 @injectable()
 class DeleteUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(user: User): Promise<void> {
-    const findUser = await this.usersRepository.findByMail(user.email);
+  public async execute({ email }: Request): Promise<void> {
+    const findUser = await this.usersRepository.findByMail(email);
 
     if (!findUser) {
       throw new AppError('User não encontrado!');
     }
 
-    await this.usersRepository.delete(user);
+    await this.cacheProvider.invalidate(findUser.id);
+    await this.usersRepository.delete(findUser);
   }
 }
 
