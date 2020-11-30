@@ -28,8 +28,6 @@
       "@typescript-eslint/camelcase": "off",
       "class-methods-use-this": "off",
       "array-callback-return": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-explicit-any": "off",
       "import/extensions": [
         "error",
         "ignorePackages",

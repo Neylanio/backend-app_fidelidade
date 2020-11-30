@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe';
-import AppError from '@shared/errors/AppError';
 
-import ICacheProvider from '@shared/container/CacheProvider/models/ICacheProvider';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import User from '../infra/typeorm/entities/User';
+import AppError from '../../../shared/errors/AppError';
 
 interface Request {
   email: string;
