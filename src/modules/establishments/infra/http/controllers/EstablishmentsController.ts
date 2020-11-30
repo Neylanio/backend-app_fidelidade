@@ -70,7 +70,7 @@ export default class EstablishmentsController {
     } catch (error) {
       const deleteUserService = container.resolve(DeleteUserService);
 
-      await deleteUserService.execute(employee);
+      await deleteUserService.execute({ email });
 
       return response
         .status(401)

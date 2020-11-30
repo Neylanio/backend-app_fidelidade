@@ -11,7 +11,7 @@ interface Request {
   username: string;
   password: string;
   surname: string;
-  type_employee: 'common' | 'manager';
+  type_employee: string;
   whatsapp: string;
   avatar: string;
 }
